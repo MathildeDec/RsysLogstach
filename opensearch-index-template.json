@@ -1,0 +1,75 @@
+{
+  "index_patterns": ["switch-logs-*"],
+  "priority": 100,
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "number_of_replicas": 1
+    },
+    "mappings": {
+      "dynamic_templates": [
+        {
+          "message_field": {
+            "path_match": "message",
+            "match_mapping_type": "string",
+            "mapping": { "type": "text" }
+          }
+        },
+        {
+          "string_fields": {
+            "match": "*",
+            "match_mapping_type": "string",
+            "mapping": {
+              "type": "text",
+              "fields": { "keyword": { "type": "keyword", "ignore_above": 256 } }
+            }
+          }
+        }
+      ],
+      "properties": {
+        "@timestamp": { "type": "date" },
+        "@version": { "type": "keyword" },
+        "message": { "type": "text" },
+        "timestamp": { "type": "date", "format": "epoch_second" },
+        "hostname": { "type": "keyword" },
+        "syslogtag": { "type": "keyword" },
+        "msg": { "type": "text" },
+        "msgspifno1stsp": { "type": "text" },
+        "msgdroplastlf": { "type": "text" },
+        "pri-text": { "type": "keyword" },
+        "program_name": { "type": "keyword" },
+        "Facility": { "type": "integer" },
+        "syslogfacility-text": { "type": "keyword" },
+        "Priority": { "type": "integer" },
+        "syslogpriority-text": { "type": "keyword" },
+        "syslogseverity": { "type": "integer" },
+        "syslogseverity-text": { "type": "keyword" },
+        "FromHost": { "type": "ip" },
+        "protocol-version": { "type": "keyword" },
+        "structured-data": { "type": "text" },
+        "app-name": { "type": "keyword" },
+        "procid": { "type": "keyword" },
+        "msgid": { "type": "keyword" },
+        "inputname": { "type": "keyword" },
+        "ReceivedAt": { "type": "date", "format": "yyyy-MM-dd HH:mm:ss||strict_date_optional_time||epoch_millis" },
+        "DeviceReportedTime": { "type": "date", "format": "yyyy-MM-dd HH:mm:ss||strict_date_optional_time||epoch_millis" },
+        "iut": { "type": "keyword" },
+        "pri": { "type": "integer" },
+        "rawmsg-after-pri": { "type": "text" },
+        "geoip": {
+          "dynamic": true,
+          "properties": {
+            "ip": { "type": "ip" },
+            "location": { "type": "geo_point" },
+            "latitude": { "type": "half_float" },
+            "longitude": { "type": "half_float" }
+          }
+        },
+        "enrichment": {
+          "type": "object",
+          "dynamic": true
+        }
+      }
+    }
+  }
+}

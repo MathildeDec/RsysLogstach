@@ -1,0 +1,40 @@
+[project]
+name = "rsyslogstach"
+version = "0.9.0"
+description = "Pont rsyslog -> omprog (asyncio) -> OpenSearch, compatible schéma/filtres Logstash"
+requires-python = ">=3.11"
+dependencies = [
+    "loguru>=0.7",
+    "opensearch-py[async]",
+    "geoip2",
+    "maxminddb",
+    "pyyaml",
+    "logstash-pipeline-parser==0.0.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "ruff",
+]
+
+[tool.uv]
+# Projet à plat (src/*.py sans __init__.py, importé via sys.path — voir
+# tests/conftest.py et `PYTHONPATH=src` dans le déploiement rsyslog, pas
+# via une installation `pip install`) : rien à construire/empaqueter.
+# `package = false` dit à uv de gérer uniquement l'environnement
+# (résolution + verrouillage des dépendances dans uv.lock), sans tenter
+# un build PEP 517 qui nécessiterait de restructurer src/ en package
+# installable — changement hors de portée de cette session (remplacement
+# d'outil de gestion de dépendances, pas de la disposition du dépôt).
+package = false
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "I"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

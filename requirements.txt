@@ -1,0 +1,6 @@
+loguru>=0.7
+opensearch-py[async]
+geoip2
+maxminddb
+pyyaml
+logstash-pipeline-parser==0.0.3
